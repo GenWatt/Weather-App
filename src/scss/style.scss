@@ -1,0 +1,275 @@
+* {
+  box-sizing: border-box;
+}
+
+$bg-color: rgb(57, 162, 180);
+$font-color-white: rgb(241, 233, 233);
+
+@mixin centerFlex($display: flex, $justify: center, $aligin: center) {
+  display: $display;
+  justify-content: $justify;
+  align-items: $aligin;
+}
+
+@mixin position($pos: absolute, $top: 0, $right: 0) {
+  position: $pos;
+  top: $top;
+  right: $right;
+}
+
+body.--day {
+  &::before {
+    content: "";
+    @include position();
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 0, 0.199);
+    box-shadow: 3px 3px 10px 100px rgba(255, 255, 0, 0.185),
+      3px 3px 10px 300px rgba(255, 255, 0, 0.164);
+    z-index: -1;
+    transform: translate(100px, -50px);
+    animation: sun-grow 5s linear infinite;
+  }
+
+  @keyframes sun-grow {
+    0% {
+      transform: translate(100px, -50px) scale(1);
+    }
+
+    50% {
+      transform: translate(100px, -50px) scale(1.1);
+    }
+
+    100% {
+      transform: translate(100px, -50px) scale(1);
+    }
+  }
+}
+
+body.--night {
+  &::before {
+    content: "";
+    @include position(absolute, -100px, -100px);
+    width: 300px;
+    height: 300px;
+    background-color: rgb(233, 224, 224);
+    border-radius: 50%;
+    z-index: -1;
+    box-shadow: inset 3px 3px 15px 10px rgba(0, 0, 0, 0.377),
+      inset 20px 3px 15px 20px rgba(0, 0, 0, 0.452),
+      inset 20px 3px 15px 40px rgba(0, 0, 0, 0.123),
+      inset 20px 3px 15px 70px rgba(0, 0, 0, 0.281),
+      3px 3px 10px 10px rgba(255, 255, 255, 0.356),
+      3px 3px 30px 70px rgba(255, 255, 255, 0.192);
+    animation: moon-move 5s ease infinite;
+  }
+
+  @keyframes moon-move {
+    0% {
+      transform: scale(1);
+      top: -100px;
+      right: -100px;
+    }
+
+    50% {
+      transform: scale(1.1);
+      top: -80px;
+      right: -80px;
+    }
+
+    100% {
+      transform: scale(1);
+      top: -100px;
+      right: -100px;
+    }
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-image: linear-gradient(
+    35deg,
+    rgb(11, 132, 202),
+    rgb(46, 99, 160),
+    rgb(23, 80, 102),
+    rgb(0, 10, 14)
+  );
+  color: $font-color-white;
+  min-height: 100vh;
+  @include centerFlex(flex, initial, center);
+  flex-direction: column;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  overflow-x: hidden;
+
+  main {
+    width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+.location {
+  @include centerFlex(flex, space-around, initial);
+  flex-wrap: wrap;
+
+  .location__city {
+    display: block;
+    margin-top: 20px;
+    font-size: 1.3rem;
+    position: relative;
+    min-width: 150px;
+    max-height: 90px;
+
+    .location__city-name {
+      width: 100%;
+      @include position(absolute, 50%, 50%);
+      transform: translate(50%, -50%);
+      text-align: center;
+    }
+
+    i {
+      @include position(absolute, 50%, 50%);
+      transform: translate(50%, -50%);
+      opacity: 0.75;
+      color: rgb(177, 177, 177);
+      font-size: 4.5rem;
+      z-index: -1;
+    }
+  }
+
+  .location__quick-view {
+    display: grid;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    grid-template-columns: 110px minmax(200px, 300px);
+    grid-template-rows: repeat(6, 30px);
+    min-height: 100px;
+    place-content: center;
+
+    p {
+      @include centerFlex(flex, initial, center);
+      border-top: 1px solid white;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+
+      &:first-child {
+        border: none;
+      }
+    }
+
+    .--result {
+      justify-content: flex-end;
+    }
+
+    .location__text {
+      grid-column: span 2;
+      justify-self: center;
+    }
+  }
+
+  .location__current-day {
+    margin-top: 10px;
+
+    .location__date {
+      font-size: 2.5rem;
+      color: rgb(6, 154, 180);
+      text-align: center;
+    }
+
+    .location__sunrise {
+      color: rgb(255, 255, 255);
+    }
+
+    .location__sunset {
+      color: #008ec5;
+    }
+
+    span {
+      display: block;
+      text-align: center;
+    }
+
+    .location__icon {
+      @include centerFlex();
+
+      img {
+        text-align: center;
+        width: 110px;
+        height: 110px;
+      }
+    }
+  }
+}
+
+.future-weather {
+  text-align: center;
+  font-size: 2.5rem;
+  color: rgb(223, 241, 241);
+}
+
+.conteiner--future-date {
+  @include centerFlex(grid, space-around);
+  grid-template-columns: repeat(auto-fill, 300px);
+
+  .conteiner__box {
+    margin-top: 15px;
+    font-size: 1rem;
+    width: 100%;
+    min-width: 80px;
+    text-align: center;
+    padding: 0.4rem;
+
+    .conteiner__day {
+      font-size: 2.5rem;
+      color: blanchedalmond;
+    }
+
+    div {
+      margin-bottom: 5px;
+      border-bottom: 1px dashed white;
+      padding: 0.3rem;
+    }
+  }
+}
+
+footer {
+  margin-top: 10px;
+  position: absolute;
+  bottom: 0;
+
+  a {
+    display: inline-block;
+    color: white;
+    margin: 5px;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 895px) {
+  footer {
+    position: static;
+    width: 100%;
+  }
+
+  .conteiner--future-date {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+  }
+}
+
+@media screen and (max-width: 740px) {
+  body.night::before {
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .location {
+    min-height: 550px;
+    flex-direction: column;
+  }
+}
