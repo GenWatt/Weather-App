@@ -2,9 +2,6 @@ import "../scss/style.scss";
 import { getSunrise, getSunset } from "sunrise-sunset-js";
 import anime from "animejs";
 
-const MAX_TEMP_DIFF = 7;
-const MAX_PRESSURE_DIFF = 30;
-
 const weatherTypes: string[] = [
   "Słonecznie",
   "Pochmurno",
@@ -15,8 +12,12 @@ const weatherTypes: string[] = [
 ];
 
 interface DOMElements {
+  errorMsgElement: HTMLDivElement;
+  errorMsgBtn: HTMLElement;
   degreeElement: HTMLElement;
+  locationCityConteiner: HTMLElement;
   cityElement: HTMLElement;
+  quickViewElement: HTMLElement;
   descriptionElement: HTMLElement;
   pressureElement: HTMLElement;
   windElement: HTMLElement;
@@ -30,17 +31,23 @@ interface DOMElements {
 }
 
 const DOMElements: DOMElements = {
-  degreeElement: document.querySelector(".location__current-degree"),
+  errorMsgElement: document.querySelector(".error-msg"),
+  errorMsgBtn: document.querySelector(".error-msg__btn"),
+  degreeElement: document.querySelector(".location__details--current-degree"),
+  locationCityConteiner: document.querySelector(".location__city"),
   cityElement: document.querySelector(".location__city-name"),
-  descriptionElement: document.querySelector(".location__description"),
-  pressureElement: document.querySelector(".location__pressure"),
-  windElement: document.querySelector(".location__wind"),
-  realFeelElement: document.querySelector(".location__real-feel"),
+  quickViewElement: document.querySelector(".location__quick-view"),
+  descriptionElement: document.querySelector(".location__details--description"),
+  pressureElement: document.querySelector(".location__details--pressure"),
+  windElement: document.querySelector(".location__details--wind"),
+  realFeelElement: document.querySelector(".location__details--real-feel"),
   currentDayElement: document.querySelector(".location__current-day"),
   conteinerBox: document.querySelectorAll(".conteiner__box"),
-  boxDegreeElement: document.querySelectorAll(".conteiner__degree"),
-  boxPressureElement: document.querySelectorAll(".conteiner__pressure"),
-  boxWeatherElement: document.querySelectorAll(".conteiner__weather"),
+  boxDegreeElement: document.querySelectorAll(".conteiner__details--degree"),
+  boxPressureElement: document.querySelectorAll(
+    ".conteiner__details--pressure"
+  ),
+  boxWeatherElement: document.querySelectorAll(".conteiner__details--weather"),
   conteinerUnitElement: document.querySelectorAll(".conteiner__unit"),
 };
 
@@ -72,11 +79,15 @@ const year: (string | number)[][] = [
 interface parameters {
   lat: number;
   long: number;
+  MAX_TEMP_DIFF: number;
+  MAX_PRESSURE_DIFF: number;
 }
 
 const parameters: parameters = {
   lat: null,
   long: null,
+  MAX_TEMP_DIFF: 7,
+  MAX_PRESSURE_DIFF: 30,
 };
 
 interface themes {
@@ -113,22 +124,32 @@ class GetData {
       parameters.long = await position.coords.longitude;
 
       const { components } = await fetch(
-        `https://api.opencagedata.com/geocode/v1/json?q=${parameters.lat}+${parameters.long}&key=6dc2be2af0d344edacc742fab6b0a09f`
+        `https://api.opencagedata.com/geocode/v1/json?q=${parameters.lat}+${parameters.long}&key=${process.env.LOCATION_API_KEY}`
       )
         .then((res) => (res.status === 200 ? res.json() : null))
         .then((data) => data.results[0])
         .catch((err) => console.error(err));
-
       self.getWeather(components.city);
     }
 
-    async function error() {
-      console.log("error");
+    async function error(e) {
+      alert(
+        "Error: Probably you didn't allow for getting location. Error message: " +
+          e.message
+      );
+      DOMElements.errorMsgElement.classList.add("error-msg--show");
+      DOMElements.errorMsgElement.insertAdjacentHTML(
+        "afterbegin",
+        `<p>If you want to check weather you should allow for getting location.</p>`
+      );
+      DOMElements.errorMsgBtn.addEventListener("click", () =>
+        DOMElements.errorMsgElement.classList.remove("error-msg--show")
+      );
     }
   }
 
   async getWeather(location: string) {
-    const http: string = `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=9f6c5c9e242f9394b7477436113cfca0&units=metric`;
+    const http: string = `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.WEATHER_API_KEY}&units=metric`;
 
     fetch(http)
       .then((res) => {
@@ -174,10 +195,10 @@ class UpdateData implements UpdateDataInteface {
 
   updateFutureParameters() {
     DOMElements.boxDegreeElement.forEach((box) =>
-      this.randomNumber(box, MAX_TEMP_DIFF, this.temp)
+      this.randomNumber(box, parameters.MAX_TEMP_DIFF, this.temp)
     );
     DOMElements.boxPressureElement.forEach((box) =>
-      this.randomNumber(box, MAX_PRESSURE_DIFF, this.pressure)
+      this.randomNumber(box, parameters.MAX_PRESSURE_DIFF, this.pressure)
     );
     DOMElements.boxWeatherElement.forEach((box) =>
       this.randomNumber(box, weatherTypes.length - 1)
@@ -198,7 +219,7 @@ class UpdateData implements UpdateDataInteface {
     const unitElement = element.querySelector(".conteiner__unit");
     let unit: string = "\u00B0";
 
-    if (element.className === "conteiner__weather") {
+    if (element.classList.contains("conteiner__details--weather")) {
       const temp: number = parseFloat(
         element.nextElementSibling.innerText.slice("\u00B0")
       );
@@ -212,7 +233,8 @@ class UpdateData implements UpdateDataInteface {
       return;
     }
 
-    if (element.className === "conteiner__pressure") unit = "mPa";
+    if (element.classList.contains("conteiner__details--pressure"))
+      unit = "mPa";
 
     unitElement.innerText = unit;
     this.animeDigital(element, counting);
@@ -225,6 +247,41 @@ class UpdateData implements UpdateDataInteface {
       targets: valueElement,
       innerText: [0, count],
       round: 1,
+    });
+
+    this.animeElements();
+  }
+
+  animeElements() {
+    const dayNameElement = document.querySelectorAll(
+      ".conteiner__details--day"
+    );
+
+    anime({
+      targets: dayNameElement,
+      translateX: [-1000, 0],
+      delay: anime.stagger(50),
+      duration: 1000,
+    });
+
+    anime({
+      targets: DOMElements.quickViewElement,
+      scaleY: [0, 1],
+      delay: 100,
+      duration: 1000,
+    });
+
+    anime({
+      targets: DOMElements.currentDayElement.children,
+      translateX: [500, 0],
+      delay: anime.stagger(100),
+    });
+
+    anime({
+      targets: DOMElements.locationCityConteiner.children,
+      translateX: [-500, 50 + "%"],
+      translateY: [-500, -50 + "%"],
+      delay: anime.stagger(100, { start: 500 }),
     });
   }
 }
@@ -279,9 +336,9 @@ class CurrentTime implements CurrentTimeInterface {
 
   setDate() {
     DOMElements.currentDayElement.innerHTML = `
-   <span class="location__date">${this.numberDay} ${this.weekDay}</span>
-   <span class="location__sunrise">Wschód słońca:${this.sunrise}</span>
-   <span class="location__sunset">Zachód słońca:${this.sunset}</span>
+   <span class="location__basic-details location__basic-details--date">${this.numberDay} ${this.weekDay}</span>
+   <span class="location__basic-details location__basic-details--sunrise">Wschód słońca:${this.sunrise}</span>
+   <span class="location__basic-details location__basic-details--sunset">Zachód słońca:${this.sunset}</span>
    <div class="location__icon"></div>
 `;
   }
@@ -289,6 +346,7 @@ class CurrentTime implements CurrentTimeInterface {
   setIcon(data) {
     const img: HTMLImageElement = document.createElement("img");
     const src: string = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    img.classList.add("location__img");
     img.src = src;
     img.alt = "weather-icon";
 
@@ -304,10 +362,10 @@ class CurrentTime implements CurrentTimeInterface {
 
     if (this.sunset <= time || this.sunrise >= time) {
       document.body.style.backgroundImage = themes.night;
-      document.body.classList.replace("--day", "--night");
+      document.body.classList.replace("theme--day", "theme--night");
     } else {
       document.body.style.backgroundImage = themes.day;
-      document.body.classList.replace("--night", "--day");
+      document.body.classList.replace("theme--night", "theme--day");
     }
   }
 
@@ -317,7 +375,9 @@ class CurrentTime implements CurrentTimeInterface {
     let currentYear: number = this.year;
 
     DOMElements.conteinerBox.forEach((box) => {
-      const boxDateElement: HTMLElement = box.querySelector(".conteiner__date");
+      const boxDateElement: HTMLElement = box.querySelector(
+        ".conteiner__details--date"
+      );
 
       if (numberOfDay === year[currentMonth][1]) {
         currentMonth++;
@@ -343,7 +403,9 @@ class CurrentTime implements CurrentTimeInterface {
     let currentDay: number = this.weekDayIndex;
 
     DOMElements.conteinerBox.forEach((box) => {
-      const boxDayElement: HTMLElement = box.querySelector(".conteiner__day");
+      const boxDayElement: HTMLElement = box.querySelector(
+        ".conteiner__details--day"
+      );
 
       currentDay++;
       if (currentDay === week.length) currentDay = 0;

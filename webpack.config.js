@@ -43,6 +43,9 @@ module.exports = {
     filename: "bundle.js",
     path: path.resolve(__dirname, "./dist"),
   },
+  node: {
+    fs: "empty",
+  },
   plugins: [
     new ExtractTextPlugin("./style.css"),
     new HtmlWebpackPlugin({

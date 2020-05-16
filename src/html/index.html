@@ -7,91 +7,97 @@
   <title>Weather-App</title>
 </head>
 
-<body class="--night">
+<body class="theme theme--night">
+  <div class="error-msg">
+    <button class="error-msg__btn">Hide</button>
+  </div>
   <main>
     <div class="location">
       <div class="location__city">
         <strong class="location__city-name">Bielsko-Biała</strong>
-        <i class="fas fa-city"></i>
+        <i class="location__fa-city fas fa-city"></i>
       </div>
       <div class="location__quick-view">
-        <p class="location__text">Szybki podgląd:</p>
-        <p>Temperatura</p>
-        <p class="location__current-degree --result">18&deg;</p>
-        <p>Opis</p>
-        <p class="location__description --result">Słonecznie</p>
-        <p>Ciśnienie</p>
-        <p class="location__pressure --result">1000</p>
-        <p>Wiatr</p>
-        <p class="location__wind --result">3km/h</p>
-        <p>Odczucie</p>
-        <p class="location__real-feel --result">10</p>
+        <p class="location__details location__details--text">Szybki podgląd:</p>
+        <p class="location__details">Temperatura</p>
+        <p class="location__details location__details--current-degree location__details--result">18&deg;</p>
+        <p class="location__details">Opis</p>
+        <p class="location__details location__details--description location__details--result">Słonecznie</p>
+        <p class="location__details">Ciśnienie</p>
+        <p class="location__details location__details--pressure location__details--result">1000</p>
+        <p class="location__details">Wiatr</p>
+        <p class="location__details location__details--wind location__details--result">3km/h</p>
+        <p class="location__details">Odczucie</p>
+        <p class="location__details location__details--real-feel location__details--result">10</p>
       </div>
       <div class="location__current-day"></div>
     </div>
-    <h1 class="future-weather">Następny tydzień</h1>
-    <div class="conteiner--future-date">
+    <header class="future-weather">
+      <h1>Następny tydzień</h1>
+    </header>
+    <section class="conteiner">
       <div class="conteiner__box">
-        <div class="conteiner__day">Poniedziałek</div>
-        <div class="conteiner__date">03.04.2020</div>
-        <div class="conteiner__weather">Słonecznie</div>
-        <div class="conteiner__degree">
+        <div class="conteiner__details conteiner__details--day">Poniedziałek</div>
+        <div class="conteiner__details conteiner__details--date">03.04.2020</div>
+        <div class="conteiner__details conteiner__details--weather">Słonecznie</div>
+        <div class="conteiner__details conteiner__details--degree">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">&deg;</span></div>
-        <div class="conteiner__pressure">
+        <div class="conteiner__details conteiner__details--pressure">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">hPa</span></div>
       </div>
       <div class="conteiner__box">
-        <div class="conteiner__day">Poniedziałek</div>
-        <div class="conteiner__date">03.04.2020</div>
-        <div class="conteiner__weather">Słonecznie</div>
-        <div class="conteiner__degree">
+        <div class="conteiner__details conteiner__details--day">Poniedziałek</div>
+        <div class="conteiner__details conteiner__details--date">03.04.2020</div>
+        <div class="conteiner__details conteiner__details--weather">Słonecznie</div>
+        <div class="conteiner__details conteiner__details--degree">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">&deg;</span></div>
-        <div class="conteiner__pressure">
+        <div class="conteiner__details conteiner__details--pressure">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">hPa</span></div>
       </div>
       <div class="conteiner__box">
-        <div class="conteiner__day">Poniedziałek</div>
-        <div class="conteiner__date">03.04.2020</div>
-        <div class="conteiner__weather">Słonecznie</div>
-        <div class="conteiner__degree">
+        <div class="conteiner__details conteiner__details--day">Poniedziałek</div>
+        <div class="conteiner__details conteiner__details--date">03.04.2020</div>
+        <div class="conteiner__details conteiner__details--weather">Słonecznie</div>
+        <div class="conteiner__details conteiner__details--degree">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">&deg;</span></div>
-        <div class="conteiner__pressure">
+        <div class="conteiner__details conteiner__details--pressure">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">hPa</span></div>
       </div>
       <div class="conteiner__box">
-        <div class="conteiner__day">Poniedziałek</div>
-        <div class="conteiner__date">03.04.2020</div>
-        <div class="conteiner__weather">Słonecznie</div>
-        <div class="conteiner__degree">
+        <div class="conteiner__details conteiner__details--day">Poniedziałek</div>
+        <div class="conteiner__details conteiner__details--date">03.04.2020</div>
+        <div class="conteiner__details conteiner__details--weather">Słonecznie</div>
+        <div class="conteiner__details conteiner__details--degree">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">&deg;</span></div>
-        <div class="conteiner__pressure">
+        <div class="conteiner__details conteiner__details--pressure">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">hPa</span></div>
       </div>
       <div class="conteiner__box">
-        <div class="conteiner__day">Poniedziałek</div>
-        <div class="conteiner__date">03.04.2020</div>
-        <div class="conteiner__weather">Słonecznie</div>
-        <div class="conteiner__degree">
+        <div class="conteiner__details conteiner__details--day">Poniedziałek</div>
+        <div class="conteiner__details conteiner__details--date">03.04.2020</div>
+        <div class="conteiner__details conteiner__details--weather">Słonecznie</div>
+        <div class="conteiner__details conteiner__details--degree">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">&deg;</span></div>
-        <div class="conteiner__pressure">
+        <div class="conteiner__details conteiner__details--pressure">
           <span class="conteiner__value">0</span>
           <span class="conteiner__unit">hPa</span></div>
       </div>
-    </div>
+    </section>
   </main>
 
-  <footer>
-    <a href="https://www.linkedin.com/in/adrian-raszka-front-end/" target="blank">Created by Adrian Raszka</a>
-    <a href="https://openweathermap.org/api" target="_blank">OpenWeather API</a>
+  <footer class="footer">
+    <a class="footer__link" href="https://www.linkedin.com/in/adrian-raszka-front-end/" target="blank">Created by Adrian
+      Raszka</a>
+    <a class="footer__link" href="https://openweathermap.org/api" target="_blank">OpenWeather API</a>
   </footer>
   <script src="https://kit.fontawesome.com/61630affa7.js" crossorigin="anonymous"></script>
 </body>
