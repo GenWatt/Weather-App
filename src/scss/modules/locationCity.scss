@@ -1,0 +1,40 @@
+@use "./variable.scss"as *;
+@use "./mixins.scss"as *;
+
+.location {
+    @include centerFlex(flex, space-around, initial);
+    flex-wrap: wrap;
+}
+
+.location__city {
+    display: block;
+    margin-top: 20px;
+    font-size: $font-medium;
+    position: relative;
+    min-width: 150px;
+    max-height: 90px;
+}
+
+.location__city-name {
+    width: 100%;
+    @include position(absolute, 50%, 50%);
+    transform: translate(50%, -50%);
+    text-align: center;
+}
+
+.location__fa-city {
+    @include position(absolute, 50%, 50%);
+    transform: translate(50%, -50%);
+    opacity: 0.75;
+    color: rgb(177, 177, 177);
+    font-size: $font-large * 1.2;
+    z-index: -1;
+}
+
+.location__current-day {
+    margin-top: 10px;
+}
+
+.location__icon {
+    @include centerFlex();
+}

@@ -1,0 +1,16 @@
+@use './variable.scss'as *;
+
+.footer {
+    margin-top: 10px;
+    position: absolute;
+    bottom: 0;
+    font-size: $font-small;
+}
+
+.footer__link {
+    display: inline-block;
+    color: white;
+    margin: 5px;
+    width: 100%;
+    text-align: center;
+}

@@ -1,0 +1,65 @@
+@use "./variable.scss"as*;
+@use "./mixins.scss"as *;
+
+.theme--day {
+    &::before {
+        content: "";
+        @include position();
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 0, 0.199);
+        box-shadow: $day-shadow;
+        z-index: -1;
+        transform: translate(100px, -50px);
+        animation: sun-grow 5s linear infinite;
+    }
+
+    @keyframes sun-grow {
+        0% {
+            transform: translate(100px, -50px) scale(1);
+        }
+
+        50% {
+            transform: translate(100px, -50px) scale(1.1);
+        }
+
+        100% {
+            transform: translate(100px, -50px) scale(1);
+        }
+    }
+}
+
+.theme--night {
+    &::before {
+        content: "";
+        @include position(absolute, -100px, -100px);
+        width: 300px;
+        height: 300px;
+        background-color: rgb(233, 224, 224);
+        border-radius: 50%;
+        z-index: -1;
+        box-shadow: $night-shadow;
+        animation: moon-move 5s ease infinite;
+    }
+
+    @keyframes moon-move {
+        0% {
+            transform: scale(1);
+            top: -100px;
+            right: -100px;
+        }
+
+        50% {
+            transform: scale(1.1);
+            top: -80px;
+            right: -80px;
+        }
+
+        100% {
+            transform: scale(1);
+            top: -100px;
+            right: -100px;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+@use "./variable.scss"as *;
+@use "./mixins.scss"as *;
+
+.conteiner {
+    @include centerFlex(grid, space-around);
+    grid-template-columns: repeat(auto-fill, 300px);
+}
+
+.conteiner__box {
+    margin-top: 15px;
+    font-size: $font-medium;
+    width: 100%;
+    min-width: 80px;
+    text-align: center;
+    padding: 0.4rem;
+}
+
+.conteiner__details {
+    margin-bottom: 5px;
+    border-bottom: 1px dashed white;
+    padding: 0.3rem;
+}
+
+.conteiner__details--day {
+    font-size: $font-high;
+    color: blanchedalmond;
+}

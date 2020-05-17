@@ -1,0 +1,40 @@
+@use "./variable.scss"as *;
+@use "./mixins.scss"as *;
+
+.location__quick-view {
+    display: grid;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    grid-template-columns: 110px minmax(200px, 300px);
+    grid-template-rows: repeat(6, 30px);
+    min-height: 100px;
+    place-content: center;
+}
+
+.location__details {
+    @include centerFlex(flex, initial, center);
+    border-top: 1px solid $font-color-white;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+
+    &:first-child {
+        border: none;
+    }
+}
+
+.location__details--result {
+    justify-content: flex-end;
+}
+
+.location__details--text {
+    grid-column: span 2;
+    justify-self: center;
+}
+
+.future-weather {
+    text-align: center;
+    font-size: $font-high;
+    color: rgb(223, 241, 241);
+}

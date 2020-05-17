@@ -1,0 +1,24 @@
+@media screen and (max-width: 895px) {
+    .footer {
+        position: static;
+        width: 100%;
+    }
+
+    .conteiner {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 500px));
+    }
+}
+
+@media screen and (max-width: 740px) {
+    .theme--night::before {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    .location {
+        min-height: 550px;
+        flex-direction: column;
+    }
+}
