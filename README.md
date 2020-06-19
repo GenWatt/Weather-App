@@ -1,6 +1,6 @@
 # Weather-App
 
-##Aplikacja wykorzystuje dane pogodowe z openweather
+## Aplikacja wykorzystuje dane pogodowe z openweather
 
 ##Aby pobrać aplikacje musisz sklonowac to repozytorum na swój komputer oraz użyć komendy npm install, aby zainstalować wszystkie zależności
 
